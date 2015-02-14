@@ -19,7 +19,7 @@ if(Select-String -Path $PROFILE -Pattern $profileLine -Quiet -SimpleMatch) {
 Write-Host "Adding vagrant-status to profile..."
 @"
 
-# Load vagrant-status example profile
+# Load default profile
 $profileLine
 
 "@ | Out-File $PROFILE -Append -Encoding Default

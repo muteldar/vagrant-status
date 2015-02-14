@@ -4,5 +4,5 @@ Import-Module .\vagrant-status
 
 function prompt {
     Write-VagrantStatus
-    return ">"
+    return "> "
 }

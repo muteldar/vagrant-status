@@ -23,3 +23,11 @@ The prompt was originally powered by Vagrant's "Vagrant Status" command however 
 ###Based On
 
 This project is heavily based on the great PowerShell prompt plug-in [posh-git](https://github.com/dahlbyk/posh-git)
+
+###Contributing
+
+ 1. Fork it
+ 2. Create your feature branch (git checkout -b my-new-feature)
+ 3. Commit your changes (git commit -am 'Add some feature')
+ 4. Push to the branch (git push origin my-new-feature)
+ 5. Create a new Pull Request

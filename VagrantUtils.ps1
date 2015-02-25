@@ -36,7 +36,7 @@ function Get-VagrantDir {
 
 function Write-VagrantStatus {
     $vagrantFolder = Get-VagrantDir
-    if(Test-Path $vagrantFolder)
+    if(Test-Path $vagrantFolder -and Get-VagrantFile)
     {
         $vagrantActive = $FALSE
         $items = Get-ChildItem -Path $vagrantFolder -Recurse -File -Filter 'id'

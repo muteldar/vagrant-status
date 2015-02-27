@@ -20,6 +20,8 @@ If there is an active Vagrant machine(s) you will see [^] the ^ is colorized in 
 
 The prompt was originally powered by Vagrant's "Vagrant Status" command however this has proven to be quite slow for use on a prompt. ~4-10 second rendering time between prompt display is a bit much. So for the time being that code has been left in but not used. If you want to try it out feel free to change "Write-VagrantStatus" to "Write-VagrantStatusVS" in profile.base.ps1
 
+vagrant-status can be installed with posh-git from the following repo  [posh-git-vagrant-status](https://github.com/n00bworks/posh-git-vagrant-status)
+
 ###Based On
 
 This project is heavily based on the great PowerShell prompt plug-in [posh-git](https://github.com/dahlbyk/posh-git)

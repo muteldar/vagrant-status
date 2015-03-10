@@ -1,6 +1,6 @@
 ##Vagrant-Status
 
-A PowerShell prompt modification that shows the basic status of the vagrant machines in the current directory.
+A PowerShell prompt modification that shows the basic status of [Vagrant](https://www.vagrantup.com/) machines in the current directory.
 
 ###Install Guide
 
@@ -12,9 +12,9 @@ A PowerShell prompt modification that shows the basic status of the vagrant mach
 
 ###Prompt Explanation
 
-The prompt is defined in the profile.base.ps1 which will output a working directory as well as a basic vagrant status indicator.
+The prompt is defined in the profile.base.ps1 which will output a working directory as well as a basic Vagrant status indicator.
 
-If there is an active Vagrant machine(s) you will see [^] the ^ is colorized in green. If there is a vagrantfile or folder but no Vagrant machine(s) active you will see [-].
+If there are any active Vagrant machines you will see [^] on the powershell prompt. The ^ is colorized in green. If there is a vagrantfile and/or folder but no Vagrant machines active you will see [-].
 
 ###Other Info
 

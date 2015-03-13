@@ -108,15 +108,15 @@ function Write-VagrantStatusVS {
         {
             switch($item){
                 'aborted' { $a += 1; break}
-                'not' {$n += 1; break}
+                'not' {$d += 1; break}
                 'running' {$r += 1; break}
-                'poweroff' {$n += 1; break}
+                'poweroff' {$d += 1; break}
                 default { break}
             }
         }
         Write-Host($pwd.ProviderPath) -NoNewline
         Write-Host '[' -NoNewline
-        Write-Host "N:${n} " -ForegroundColor Gray -NoNewline
+        Write-Host "D:${d} " -ForegroundColor Gray -NoNewline
         Write-Host "R:${r} " -ForegroundColor Green -NoNewline
         Write-Host "A:${a}" -ForegroundColor DarkYellow -NoNewline
         Write-Host ']' -NoNewline

@@ -1,6 +1,6 @@
 ##Vagrant-Status
 
-A PowerShell prompt modification that shows the basic status of the vagrant machines in the current directory.
+A PowerShell prompt modification that shows the basic status of [Vagrant](https://www.vagrantup.com/) machines in the current directory.
 
 ###Install Guide
 
@@ -12,13 +12,15 @@ A PowerShell prompt modification that shows the basic status of the vagrant mach
 
 ###Prompt Explanation
 
-The prompt is defined in the profile.base.ps1 which will output a working directory as well as a basic vagrant status indicator.
+The prompt is defined in the profile.base.ps1 which will output a working directory as well as a basic Vagrant status indicator.
 
-If there is an active Vagrant machine(s) you will see [^] the ^ is colorized in green. If there is a vagrantfile or folder but no Vagrant machine(s) active you will see [-].
+If there are any active Vagrant machines you will see [^] on the powershell prompt. The ^ is colorized in green. If there is a vagrantfile and/or folder but no Vagrant machines active you will see [-].
 
 ###Other Info
 
 The prompt was originally powered by Vagrant's "Vagrant Status" command however this has proven to be quite slow for use on a prompt. ~4-10 second rendering time between prompt display is a bit much. So for the time being that code has been left in but not used. If you want to try it out feel free to change "Write-VagrantStatus" to "Write-VagrantStatusVS" in profile.base.ps1
+
+vagrant-status can be installed with posh-git from the following repo  [posh-git-vagrant-status](https://github.com/n00bworks/posh-git-vagrant-status)
 
 ###Based On
 

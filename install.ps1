@@ -1,5 +1,5 @@
-﻿if($PSVersionTable.PSVersion.Major -lt 2) {
-    Write-Warning "vagrant-status requires PowerShell 2.0 or later."
+﻿if($PSVersionTable.PSVersion.Major -lt 3) {
+    Write-Warning "vagrant-status requires PowerShell 3.0 or later."
     return
 }
 

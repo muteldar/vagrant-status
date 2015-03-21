@@ -3,7 +3,8 @@
 Import-Module .\vagrant-status
 
 function prompt {
-    Write-VagrantStatus
+    Write-Host($pwd.ProviderPath) -nonewline
+    Write-VagrantStatusDetailed
     return "> "
 }
 

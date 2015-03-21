@@ -34,9 +34,28 @@ function Get-VagrantDir {
     return $FALSE
 }
 
-function Write-VagrantStatus {
+function Get-VagrantEnvIndex {
+    $vagrantEnvVar = [environment]::GetEnvironmentVariable("VAGRANT_HOME","User")
+    if($vagrantEnvVar)
+    {
+
+    }
+    else
+    {
+        $dirName = '.vagrant.d'
+        $base = Get-Item -Force $HOME
+        $vagrantEnvDir = Join-Path $base.FullName $dirName
+        if(Test-Path -LiteralPath $vagrantEnvDir)
+        {
+           $machineIndex = Get-ChildItem -Path $vagrantEnvDir -Recurse -File -Filter 'index' | % { $_.FullName }
+        }
+        return $machineIndex
+    }
+}
+
+function Write-VagrantStatusSimple {
     $vagrantFolder = Get-VagrantDir
-    if((Test-Path $vagrantFolder) -and (Get-VagrantFile -eq $TRUE))
+    if((Test-Path $vagrantFolder) -and (Get-VagrantFile))
     {
         $vagrantActive = $FALSE
         $items = Get-ChildItem -Path $vagrantFolder -Recurse -File -Filter 'id'
@@ -53,15 +72,12 @@ function Write-VagrantStatus {
         }
         if($vagrantActive)
         {
-            Write-Host($pwd.ProviderPath) -NoNewline
             Write-Host ' [' -NoNewline
             Write-Host '^' -ForegroundColor Green -NoNewline
             Write-Host ']' -NoNewline
         }
         else
         {
-            Write-Host "PS " -NoNewline
-            Write-Host($pwd.ProviderPath) -NoNewline
             Write-Host ' [' -NoNewline
             Write-Host '-' -ForegroundColor Gray -NoNewline
             Write-Host ']' -NoNewline
@@ -70,60 +86,62 @@ function Write-VagrantStatus {
     }
     elseif(Get-VagrantFile)
     {
-      Write-Host "PS " -NoNewline
-      Write-Host($pwd.ProviderPath) -NoNewline
       Write-Host ' [' -NoNewline
       Write-Host '-' -ForegroundColor Gray -NoNewline
       Write-Host ']' -NoNewline
     }
-    else
-    {
-        Write-Host "PS " -NoNewline
-        Write-Host($pwd.ProviderPath) -NoNewline
-    }
 }
 
-#
-# Vagrant Status Backed function
-#
-function Write-VagrantStatusVS {
-    if(Get-VagrantFile)
+
+function Write-VagrantStatusDetailed {
+  $vagrantFolder = Get-VagrantDir
+  $vagrantEnvJson = Get-Content(Get-VagrantEnvIndex -Raw) | ConvertFrom-Json
+  $machines = @()
+  $d = 0
+  $r = 0
+  $a = 0
+  if((Test-Path $vagrantFolder) -and (Get-VagrantFile))
+  {
+    $items = Get-ChildItem -Path $vagrantFolder -Recurse -File -Filter 'index_uuid' | % { $_.FullName }
+    if($items)
     {
-        $machineStatus = $null
-        $n = 0
-        $r = 0
-        $a = 0
-        $regex = '.+[)]'
-        $status = vagrant status 2>$null
-        $status = $status | Select-String -Pattern $regex 2>$null
-        $statusSplit = ($status.ToString() -replace '\s{\(,}','|').Split('|')
+      foreach($item in $items)
+      {
+          if($item.ToString().Contains("index_uuid"))
+          {
+              $machines = $machines + (get-content $item)
+          }
+      }
 
-        foreach($machine in $statusSplit)
+      foreach($machine in $machines)
+      {
+        foreach($envMachine in $vagrantEnvJson.machines)
         {
-            $machineSplit = ($machine -replace '\s{1,}',',').Split(',')
-            $machineStatus += $machineSplit[1]
+          $stateTemp = $envMachine.$machine | select -ExpandProperty state
+          switch($stateTemp){
+                  'aborted' { $d += 1; break}
+                  'running' {$r += 1; break}
+                  'poweroff' {$d += 1; break}
+                  default { break}
+          }
         }
-
-        foreach($item in $machineStatus)
-        {
-            switch($item){
-                'aborted' { $a += 1; break}
-                'not' {$d += 1; break}
-                'running' {$r += 1; break}
-                'poweroff' {$d += 1; break}
-                default { break}
-            }
-        }
-        Write-Host($pwd.ProviderPath) -NoNewline
-        Write-Host '[' -NoNewline
-        Write-Host "D:${d} " -ForegroundColor Gray -NoNewline
-        Write-Host "R:${r} " -ForegroundColor Green -NoNewline
-        Write-Host "A:${a}" -ForegroundColor DarkYellow -NoNewline
-        Write-Host ']' -NoNewline
+      }
+      Write-Host ' [' -NoNewline
+      Write-Host "D:${d} " -ForegroundColor Gray -NoNewline
+      Write-Host "R:${r}" -ForegroundColor Green -NoNewline
+      Write-Host ']' -NoNewline
     }
     else
     {
-      Write-Host "PS " -NoNewline
-      Write-Host($pwd.ProviderPath) -NoNewline
+      Write-Host ' [' -NoNewline
+      Write-Host "-" -ForegroundColor Gray -NoNewline
+      Write-Host ']' -NoNewline
     }
+  }
+  elseif(Get-VagrantFile)
+  {
+    Write-Host ' [' -NoNewline
+    Write-Host "-" -ForegroundColor Gray -NoNewline
+    Write-Host ']' -NoNewline
+  }
 }

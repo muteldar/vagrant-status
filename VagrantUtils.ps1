@@ -36,13 +36,19 @@ function Get-VagrantDir {
 
 function Get-VagrantEnvIndex {
     $vagrantEnvVar = [environment]::GetEnvironmentVariable("VAGRANT_HOME","User")
+    $dirName = '.vagrant.d'
     if($vagrantEnvVar)
     {
-
+        $base = Get-Item -Force $vagrantEnvVar
+        $vagrantEnvDir = Join-Path $base.FullName $dirName
+        if(Test-Path -LiteralPath $vagrantEnvDir)
+        {
+          $machineIndex = Get-ChildItem -Path $vagrantEnvDir -Recurse -File -Filter 'index' | % { $_.FullName }
+        }
+        return $machineIndex
     }
     else
     {
-        $dirName = '.vagrant.d'
         $base = Get-Item -Force $HOME
         $vagrantEnvDir = Join-Path $base.FullName $dirName
         if(Test-Path -LiteralPath $vagrantEnvDir)

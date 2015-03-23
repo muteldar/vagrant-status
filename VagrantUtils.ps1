@@ -106,7 +106,6 @@ function Write-VagrantStatusSimple {
     }
 }
 
-
 function Write-VagrantStatusDetailed {
   $vagrantFolder = Get-VagrantDir
   $vagrantEnvJson = Get-Content(Get-VagrantEnvIndex -Raw) | ConvertFrom-Json

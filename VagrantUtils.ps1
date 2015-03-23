@@ -39,8 +39,16 @@ function Get-VagrantEnvIndex {
     $dirName = '.vagrant.d'
     if($vagrantEnvVar)
     {
-        $base = Get-Item -Force $vagrantEnvVar
-        $vagrantEnvDir = Join-Path $base.FullName $dirName
+        if($vagrantEnvVar -contains $dirName)
+        {
+          $base = Get-Item -Force $vagrantEnvVar
+          $vagrantEnvDir = Join-Path $base.FullName
+        }
+        else
+        {
+          $base = Get-Item -Force $vagrantEnvVar
+          $vagrantEnvDir = Join-Path $base.FullName $dirName
+        }
         if(Test-Path -LiteralPath $vagrantEnvDir)
         {
           $machineIndex = Get-ChildItem -Path $vagrantEnvDir -Recurse -File -Filter 'index' | % { $_.FullName }
@@ -49,7 +57,7 @@ function Get-VagrantEnvIndex {
     }
     else
     {
-        $base = Get-Item -Force $HOME
+        $base = Get-Item -Force $env:USERPROFILE
         $vagrantEnvDir = Join-Path $base.FullName $dirName
         if(Test-Path -LiteralPath $vagrantEnvDir)
         {

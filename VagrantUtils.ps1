@@ -5,7 +5,6 @@
 # by scraping the .vagrant folder for any id files that should represent active/aborted some sort
 # of Vagrant machine activity.
 #
-#
 function Get-VagrantFile {
     $fileName = 'Vagrantfile'
     $base = Get-Item -Force .
